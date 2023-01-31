@@ -1,0 +1,20 @@
+@import './variable.scss';
+@import './headings.scss';
+@import './login.scss';
+
+
+html, body {
+    background-color: var(--primary-background-color);
+    margin: 0;
+    height: 100vh;
+
+
+    a {
+        &:link {
+            color: inherit;
+        }
+    }
+}
+
+
+
