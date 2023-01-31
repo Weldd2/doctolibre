@@ -270,10 +270,18 @@ function selectToutesCategories(){
     return $tab;
  }
 
+ function getRdvByMedecinByJour($id_med, $jour, $mois,$annee) {
+    include_once('pdo-oracle.php');
+
+    $conn = OuvrirConnexionPDO();
+    $req = "SELECT date_rdv FROM `rdv` where id_medecin like('".$id_med."') and DATE_FORMAT(date_rdv, \"%d/%m/%Y\") like('".$jour."/".$mois."/".$annee."')";
+    LireDonneesPDO($conn, $req, $tab);
+    return $tab;
+}
+
  function getMaxDay($month) {
     return date("t", strtotime('2022-'.$month.'-01'));
  }
- 
  
  function isToday($year, $month, $day) {
     $today = date('Y-m-d');
@@ -295,25 +303,75 @@ function selectToutesCategories(){
      return '';
  }
  
- function isFull($year, $month, $day, $data){
-     
-     return false;
- }
- 
- 
- function breakWeek($year, $month, $day) {
-    echo (date('l', mktime(0, 0, 0, $month, $day, $year)) == 'Monday')?'<br>':'';
- }
- 
- function typeDay($year, $month, $day, $data){
-     $typeDay = isToday($year, $month, $day);
-     if($typeDay == ''){
-         $typeDay = haveAnRdv($year, $month, $day, $data);
-         if($typeDay == "Rdv"){
-             if(isFull($year, $month, $day, $data)){$typeDay = "Full";}
-         }
-     }
-     return $typeDay;
- }
+function getCreneauxbyJour($id_medecin, $jour, $mois,$annee) {
+    $tab = getRdvByMedecinByJour($id_medecin, $jour,$mois,$annee);
+    $array;
+    if(!empty($tab)){
+        foreach ($tab as $key => $d) {
+            $date = $d['date_rdv'];
+            $date = strtotime($date);
+            $array[date('H', $date)] = true;
+        }
+    }
+    
+    for ($i=9; $i < 17; $i++) { 
+        if(!isset($array[$i])) {
+            $array[$i] = false;
+        }
+    }
 
+    return $array;
+}
+
+function isFull($id_medecin, $year, $month, $day, $data){
+    $count = 0;
+    $array = getCreneauxByJour($id_medecin,$day,$month,$year);
+    foreach($array as $value){
+        if($value == 1){$count++;}
+    }
+    if($count >= 8){return true;}
+    return false;
+ }
+ 
+function breakWeek($year, $month, $day) {
+    echo (date('l', mktime(0, 0, 0, $month, $day, $year)) == 'Monday')?'<br>':'';
+}
+ 
+function typeDay($id_medecin ,$year, $month, $day, $data){
+    $typeDay = isToday($year, $month, $day);
+    if($typeDay == ''){
+        $typeDay = haveAnRdv($year, $month, $day, $data);
+        if($typeDay == "Rdv"){
+            if(isFull($id_medecin ,$year, $month, $day, $data)){$typeDay = "Full";}
+        }
+    }
+    return $typeDay;
+}
+
+function getCreneauxSurNbJours($id_medecin,$nb){
+    $array;
+    $jour = getCreneauxbyJour($id_medecin, date('d'), date('m'), date('Y'));
+    $array[0] = $jour;
+    for($i = 1; $i < $nb; $i++){
+        $jour = getCreneauxbyJour($id_medecin, date('d', strtotime('+'.$i.' day')), date('m', strtotime('+'.$i.' day')), date('Y', strtotime('+'.$i.' day')));
+        array_push($array, $jour);
+    }
+    return $array;
+}
+
+function insertAvis($tab) {
+    include_once('pdo-oracle.php');
+
+    $conn = OuvrirConnexionPDO();
+    $req = "INSERT INTO `avis` (`id_medecin`, `id_patient`, `texte`) VALUES ('".$tab['id_medecin']."', '".$tab['id_patient']."', '".$tab['texte']."')";
+    majDonneesPDO($conn, $req);
+}
+
+function deleteAvis($id_avis) {
+    include_once('pdo-oracle.php');
+
+    $conn = OuvrirConnexionPDO();
+    $req = "DELETE FROM `avis` WHERE 'id_avis' =". $id_avis;
+    majDonneesPDO($conn, $req);
+}
 ?>

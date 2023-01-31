@@ -6,7 +6,9 @@ include_once('functions.php');
 $month = $_GET['mois'];
 $year = $_GET['annee'];
 
-$data = getRdvs($month, $year, "jules.mignotte@orange.fr");
+$id_medecin = "jules.mignotte@orange.fr";
+getCreneauxSurNbJours($id_medecin, 5);
+$data = getRdvs($month, $year, $id_medecin);
 
 ?>
 
@@ -24,6 +26,20 @@ $data = getRdvs($month, $year, "jules.mignotte@orange.fr");
 
    $(document).ready(function(){   
        $('.jourCalendrierToday').on('click', function(e) {
+           console.log($(this).attr('data-indexJour'));
+           document.getElementById("creneaux").style.display="block";
+       });
+   });
+
+   $(document).ready(function(){   
+       $('.jourCalendrierRdv').on('click', function(e) {
+           console.log($(this).attr('data-indexJour'));
+           document.getElementById("creneaux").style.display="block";
+       });
+   });
+
+   $(document).ready(function(){   
+       $('.jourCalendrierFull').on('click', function(e) {
            console.log($(this).attr('data-indexJour'));
            document.getElementById("creneaux").style.display="block";
        });
@@ -86,7 +102,7 @@ $data = getRdvs($month, $year, "jules.mignotte@orange.fr");
        <div class="container">   
           
            <?php for ($i=1; $i < getMaxDay($month)+1; $i++) : ?>
-               <div class='jourCalendrier<?php echo typeDay($year, $month, $i, $data) /*isToday($year, $month, $i)*/ ?>' data-indexJour="<?php echo $i?>">
+               <div class='jourCalendrier<?php echo typeDay($id_medecin,$year, $month, $i, $data)?>' data-indexJour="<?php echo $i?>">
                    <?php echo $i ?> <?php echo date('l', mktime(0, 0, 0, $month, $i, $year))?>
                </div>
            <?php endfor ?>
@@ -100,8 +116,11 @@ $data = getRdvs($month, $year, "jules.mignotte@orange.fr");
 
 
 <div id="creneaux" style="display: none;">
-   <p id="tableauDate"></p>
-   <table>
+    <p id="tableauDate"></p>
+    <?php
+        //afficheCreneaux($id_medecin,$year, $month, $i);
+    ?>
+   <!-- <table>
        <tr>
            <td>Créneau Horaire</td>
            <td>Disponibilités</td>
@@ -134,5 +153,5 @@ $data = getRdvs($month, $year, "jules.mignotte@orange.fr");
            <td>16H00 - 17H00</td>
            <td>Disponibilités</td>
        </tr>
-   </table>
+   </table> -->
 </div>
