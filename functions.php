@@ -138,4 +138,136 @@ function sansApostrophe($tab) {
     return $rep;
 }
 
+//Fonction qui, utilisée dans un <select> va rajouter en option, toutes les catégories de médecin
+function selectToutesCategories(){
+    $conn = OuvrirConnexionPDO();
+    $req = "SELECT id_categorie, nom_categorie FROM categorie";
+    LireDonneesPDO($conn, $req, $tab);
+    $res = '';
+    foreach($tab as $value){
+        $res.= "<option value='".$value['id_categorie']."'>".$value['nom_categorie']."</option>";
+    }
+    return $res;
+ }
+ 
+ 
+ //Fonction qui renvoie un array composé de tous les médecins étant dans la catégorie passée en paramètre
+ function getMedecinsParCategorie($categorie){
+    $conn = OuvrirConnexionPDO();
+    $req = "SELECT id_user, nom_medecin, prenom_medecin, adresse_medecin, tel_medecin FROM medecin JOIN categorie_medecin using(id_user) WHERE id_categorie = ".$categorie;
+    LireDonneesPDO($conn, $req, $tab);
+    return $tab;
+ }
+ 
+ 
+ //Fonction qui insère un rdv dans la base de données avec les attributs passées en paramètre
+ function insertRdv($id_patient, $id_medecin, $datetime){
+    $conn = OuvrirConnexionPDO();
+    $req = "INSERT INTO rdv VALUES(null," . $id_patient . "," . $id_medecin . ",'En attente','" . $datetime . "')";
+    echo $req;
+    LireDonneesPDO($conn, $req, $tab);
+ }
+ 
+ 
+ //Fonction qui renvoie un array composé de tous les médecins étant en attente de confirmation
+ function getMedecinsEnAttente(){
+    $conn = OuvrirConnexionPDO();
+    $req = "SELECT id_user, nom_medecin, prenom_medecin, adresse_medecin, tel_medecin FROM medecin WHERE etat_inscription_medecin = 'En attente'";
+    LireDonneesPDO($conn, $req, $tab);
+    return $tab;
+ }
+ 
+ 
+ //Fonction qui affiche un petit formulaire qui permet d'accepter ou de refuser les médecins dans l'array passé en paramètre
+ function afficherVerificationMedecins($tab){
+    if(!empty($tab)) {
+        foreach ($tab as $key => $value) {
+            echo $value['prenom_medecin'] . " " . $value['nom_medecin'];
+            echo "
+            <form action='validerMedecinTraitement.php' method='post'>
+            <input name='submitA' type='submit' value='Accepter'>
+            <input name='submitR' type='submit' value='Refuser'>
+            <input name='med_id' type='hidden' value='".$value['id_user']."'>
+            </form>
+            </br>";
+        }
+    }
+ }
+ 
+ 
+ //Fonction qui valide le médecin passé en paramètre
+ function validerMedecin($id_medecin){
+    $conn = OuvrirConnexionPDO();
+    $req = "UPDATE medecin SET etat_inscription_medecin = 'Accepté' WHERE id_user = '".$id_medecin."'";
+    LireDonneesPDO($conn, $req, $tab);
+    echo "Medecin Accepté!";
+    return;
+ }
+ 
+ 
+ //Fonction qui refuse le médecin passé en paramètre
+ function refuserMedecin($id_medecin){
+    $conn = OuvrirConnexionPDO();
+    $req = "UPDATE medecin SET etat_inscription_medecin = 'Refusé' WHERE id_user = '".$id_medecin."'";
+    LireDonneesPDO($conn, $req, $tab);
+    echo "Medecin Refusé!";
+    return;
+ }
+ 
+ 
+ //Fonction qui affiche un petit formulaire qui permet d'accepter ou de refuser les rendez-vous du médecin passé en paramètre
+ function afficherRdvEnAttente($id_medecin){
+    $tab = getRdvEnAttente($id_medecin);
+    if (!empty($tab)) {
+        foreach ($tab as $key => $value) {
+            echo $value['id_rdv'] . " " . $value['date_rdv'];
+            echo "
+            <form action='validerRdvTraitement.php' method='post'>
+                <input name='submitA' type='submit' value='Accepter'>
+                <input name='submitR' type='submit' value='Refuser'>
+                <input name='rdv_id' type='hidden' value='".$value['id_rdv']."'>
+                </form>
+                </br>";
+            }
+    }
+ }
+ 
+ 
+ //Fonction qui renvoie un array composé de tous les rendez-vous étant en attente de confirmation du médecin passé en paramètre
+ function getRdvEnAttente($id_medecin){
+    $conn = OuvrirConnexionPDO();
+    $req = "SELECT id_rdv, id_patient, id_medecin, etat_rdv, date_rdv FROM rdv WHERE id_medecin = ".$id_medecin;
+    LireDonneesPDO($conn, $req, $tab);
+    return $tab;
+ }
+ 
+ 
+ //Fonction qui valide le rendez-vous passé en paramètre
+ function validerRdv($id_rdv){
+    $conn = OuvrirConnexionPDO();
+    $req = "UPDATE rdv SET etat_rdv = 'Accepté' WHERE id_rdv = '".$id_rdv."'";
+    LireDonneesPDO($conn, $req, $tab);
+    echo "Rdv Accepté!";
+    return;
+ }
+ 
+ 
+ //Fonction qui refuse le rendez-vous passé en paramètre
+ function refuserRdv($id_rdv){
+    $conn = OuvrirConnexionPDO();
+    $req = "UPDATE rdv SET etat_rdv = 'Refusé' WHERE id_rdv = '".$id_rdv."'";
+    LireDonneesPDO($conn, $req, $tab);
+    echo "Rdv Refusé!";
+    return;
+ }
+ 
+ 
+ //Fonction qui renvoie un array composé de tous les dates des rendez-vous du mois et du médecin passée en paramètre
+ function getRdvs($mois, $annee, $medecin){
+    $conn = OuvrirConnexionPDO();
+    $req = "SELECT date_rdv FROM rdv WHERE id_medecin = '".$medecin."'";
+    LireDonneesPDO($conn, $req, $tab);
+    return $tab;
+ }
+
 ?>
