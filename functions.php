@@ -270,4 +270,50 @@ function selectToutesCategories(){
     return $tab;
  }
 
+ function getMaxDay($month) {
+    return date("t", strtotime('2022-'.$month.'-01'));
+ }
+ 
+ 
+ function isToday($year, $month, $day) {
+    $today = date('Y-m-d');
+    if($day < 9) {
+        $day = '0'.$day;
+    }
+    if(date("Y") == $year && date('m')==$month && strval(date('d'))==strval($day)) {
+        return "Today";
+    }
+    return '';
+ }
+ 
+ function haveAnRdv($year, $month, $day, $data){
+     foreach($data as $value){
+         if(strtotime(date('Y-m-d',strtotime($value['date_rdv']))) == mktime(0,0,0, $month, $day, $year)){
+             return  "Rdv";
+         }
+     }
+     return '';
+ }
+ 
+ function isFull($year, $month, $day, $data){
+     
+     return false;
+ }
+ 
+ 
+ function breakWeek($year, $month, $day) {
+    echo (date('l', mktime(0, 0, 0, $month, $day, $year)) == 'Monday')?'<br>':'';
+ }
+ 
+ function typeDay($year, $month, $day, $data){
+     $typeDay = isToday($year, $month, $day);
+     if($typeDay == ''){
+         $typeDay = haveAnRdv($year, $month, $day, $data);
+         if($typeDay == "Rdv"){
+             if(isFull($year, $month, $day, $data)){$typeDay = "Full";}
+         }
+     }
+     return $typeDay;
+ }
+
 ?>
