@@ -9,6 +9,13 @@
 	</div>
 	<?php endif ?>
 
+	<?php if(isset($_SESSION['creaCompte']) && $_SESSION['creaCompte'] == true) : ?>
+	<div class="alert alert-success" role="alert">
+  		Votre compte a bien été créé
+	</div>
+	<?php endif ?>
+
+
 	<?php if(isset($_SESSION['deco']) && $_SESSION['deco'] == true) : ?>
 	<div class="alert alert-success" role="alert">
   		Vous avez été déconnecté

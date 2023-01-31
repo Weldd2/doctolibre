@@ -7,11 +7,18 @@ include_once('head.php');
 <div class="card">
 	<form action="formulaires/traitement-creation-compte.php" id="inscriptionFormulaire" method="post" class="card-body row g-3 ">
 		<h1 class="h3 mb-3 fw-normal card-title">S'inscrire</h1>
+
+		<?php if(isset($_SESSION['error']) && $_SESSION['error'] == true) : ?>
+			<div class="alert alert-danger" role="alert">
+				Erreur
+			</div>
+		<?php endif ?>
+
 		<div class="col-12">
 			<select id="selectRole" name="role" class="form-select" onchange="addSelect()">
 				<option selected value="">Séléctionner un rôle</option>
 				<option value="Patient">Patient</option>
-				<option value="Médecin">Médecine</option>
+				<option value="Médecin">Médecin</option>
 			</select>
 		  </div>
 	
@@ -21,7 +28,7 @@ include_once('head.php');
 		</div>
 		<div class="col-md-6">
 			<label for="inputPrenom" class="form-label">Prénom</label>
-			<input type="password" class="form-control" name="prenom" id="inputPrenom">
+			<input type="text" class="form-control" name="prenom" id="inputPrenom">
 		</div>	
 	
 		<div class="col-12">
@@ -31,7 +38,7 @@ include_once('head.php');
 		
 		<div class="col-md-6">
 			<label for="passwordInscription" class="form-label">Mot de passe</label>
-			<input type="password" class="form-control" id="passwordInscription">
+			<input type="password" name="password" class="form-control" id="passwordInscription">
 		</div>
 		<div class="col-md-6">
 			<label for="inputPassword4" class="form-label">Confirmation</label>

@@ -1,3 +1,9 @@
+<?php session_start();
+$_SESSION['deco'] = false;
+$_SESSION['creaCompte'] = false;
+?>
+
+
 
 <!DOCTYPE html>
 <html lang="fr">
