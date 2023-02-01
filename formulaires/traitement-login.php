@@ -15,6 +15,7 @@ if (!empty($_POST)) {
             $_SESSION['role'] = getRole($_POST['identifiant']);
             $_SESSION['userId'] = $_POST['identifiant'];
             $_SESSION['error'] = false;
+			$_SESSION['creaCompte'] = false;
             $_SESSION['deco'] = false;
             header($locationProjet);
             exit();
