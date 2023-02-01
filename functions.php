@@ -144,6 +144,7 @@ function selectToutesCategories(){
 
     $conn = OuvrirConnexionPDO();
     $req = "SELECT id_categorie, nom_categorie FROM categorie";
+	echo $req;
     LireDonneesPDO($conn, $req, $tab);
     $res = '';
     foreach($tab as $value){
@@ -432,11 +433,15 @@ function deleteAvis($id_avis) {
     majDonneesPDO($conn, $req);
 }
 
-function printDiv($id_medecin, $medecins, $listeCreneaux){
-    $medecin = $medecins[$id_medecin];
-    $creneaux = $listeCreneaux[$id_medecin];
-    include('doctodiv.php');
+function getMotDePasse($id_user) {
+    include_once('pdo-oracle.php');
+	
+	$conn = OuvrirConnexionPDO();
+    $req = "SELECT password_user FROM user WHERE id_user = '".$id_user."'";
+    LireDonneesPDO($conn, $req, $tab);
+    return (string)$tab[0]['password_user'];
 }
+
 
 function printAllMedecinsParCategorie($id_categorie){
     $creneaux = getAllCreneauxParCategorie($id_categorie);
@@ -450,12 +455,9 @@ function printAllMedecinsParCategorie($id_categorie){
     }
 }
 
-function sendMailRappel($id_rdv){
-    $patient = getPatient($rdv[0]['id_patient']);
-    
-    $medecin = getMedecin($rdv[0]['id_medecin']);
-    
-    mail($patient[0]['id_user'],'Votre Rendez-Vous médical approche!',$patient[0]['prenom_patient'] . " , votre rendez vous médical avec " . $medecin[0]['nom_medecin'] .
-     " " . $medecin[0]['prenom_medecin'] . " est pour demain " . date('H:i',strtotime($rdv[0]['date_rdv'])) . " , n'oubliez pas d'être présent.");
+function printDiv($id_medecin, $medecins, $listeCreneaux){
+    $medecin = $medecins[$id_medecin];
+    $creneaux = $listeCreneaux[$id_medecin];
+    include('doctodiv.php');
 }
 ?>

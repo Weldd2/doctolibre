@@ -1,18 +1,42 @@
 <?php 
     session_start();
-    include_once('head.php');
+    
     include_once('functions.php');
+
+
+    if(empty($_SESSION['connected'])) {
+        header('Location: login.php');
+    }
+
 ?>
+<?php include_once('head.php');?>
+<body>
+	<?php include_once('header.php'); ?>
+
+	<div class="container text-center">
+
+		<h2>Rechercher un médecin par catégorie</h2>
+
+		<form action="" method="POST">
 
 
-<?php if(areEmptyParameters($_SESSION, 'role', 'userId')) : ?>
-    <?php if($_SESSION['role'] == 'Médecin') :  ?>
-        <?php include_once('formulaires/formulaire-modif-medecin.php'); ?>
-    <?php endif ?>
+			<select class="form-select mb-4 mt-5" name="categorie">
+				<?php echo selectToutesCategories(); ?>
+			</select>
 
-    <?php if($_SESSION['role'] == 'Patient') :  ?>
-        <?php include_once('formulaires/formulaire-modif-patient.php'); ?>
-    <?php endif ?>
-<?php endif ?>
+			<input type="submit" class="btn btn-primary" value="Envoyer">
+		</form>
 
-<a href="index.php">Menu principal</a>
+
+		<?php if(areEmptyParameters($_POST, 'categorie')) : ?>
+		
+			<?php printAllMedecinsParCategorie($_POST['categorie']); ?>
+
+		<?php endif; ?>
+
+	</div>
+
+</body>
+</html>
+
+

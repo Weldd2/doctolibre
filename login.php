@@ -3,7 +3,7 @@
 <html lang="fr">
     <?php include_once('head.php');?>
     
-    <body class="text-center">
+    <body class="text-center signin">
         
         <main class="form-signin w-100 m-auto">
 
