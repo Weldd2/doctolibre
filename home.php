@@ -13,29 +13,48 @@
 <body>
 	<?php include_once('header.php'); ?>
 
-	<div class="container text-center">
+	<?php if($_SESSION['role'] == 'Patient') :?>
 
-		<h2>Rechercher un médecin par catégorie</h2>
+		<div class="container text-center">
 
-		<form action="" method="POST">
+			<h2>Rechercher un médecin par catégorie</h2>
 
-
-			<select class="form-select mb-4 mt-5" name="categorie">
-				<?php echo selectToutesCategories(); ?>
-			</select>
-
-			<input type="submit" class="btn btn-primary" value="Envoyer">
-		</form>
+			<form action="" method="POST">
 
 
-		<?php if(areEmptyParameters($_POST, 'categorie')) : ?>
-		
-			<?php printAllMedecinsParCategorie($_POST['categorie']); ?>
+				<select class="form-select mb-4 mt-5" name="categorie">
+					<?php echo selectToutesCategories(); ?>
+				</select>
 
-		<?php endif; ?>
+				<input type="submit" class="btn btn-primary" value="Envoyer">
+			</form>
 
-	</div>
 
+			<?php if(areEmptyParameters($_POST, 'categorie')) : ?>
+			
+				<?php echo printAllMedecinsParCategorie($_POST['categorie']); ?>
+
+			<?php endif; ?>
+
+		</div>
+
+	<?php endif; ?>
+
+	<?php if($_SESSION['role'] == 'Medecin') :?>
+
+
+		<div class="container text-center">
+
+			<div class="rdv-accepte">
+				<ul></ul>
+			</div>
+			<div class="rdv-attente">
+
+			</div>
+
+		</div>
+
+	<?php endif; ?>
 </body>
 </html>
 

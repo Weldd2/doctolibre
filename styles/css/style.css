@@ -38,4 +38,32 @@ body {
   font-family: "Roboto" !important;
 }
 
+.ficheMedecin {
+  display: flex;
+  padding: 10px;
+  border: 1px solid black;
+}
+.ficheMedecin .infos {
+  width: 33.3333333333%;
+}
+.ficheMedecin .creneaux {
+  width: 66.6666666667%;
+  display: flex;
+  justify-content: space-between;
+}
+.ficheMedecin .creneaux .horaire {
+  background-color: green;
+  border-radius: 5px;
+}
+.ficheMedecin .creneaux .horaire:hover a {
+  text-decoration: underline;
+}
+.ficheMedecin .creneaux .horaire a {
+  color: white;
+  text-decoration: none;
+}
+.ficheMedecin .creneaux .horaire.booked {
+  background-color: red;
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -451,7 +451,6 @@ function printAllMedecinsParCategorie($id_categorie){
     
     for($i=0;$i<$nbMedecins;$i++){
         printDiv($i,$medecins,$creneaux);
-        echo "</br>";
     }
 }
 

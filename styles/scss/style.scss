@@ -6,3 +6,46 @@ body {
   height: 100%;
   font-family: "Roboto"!important;
 }
+
+
+
+
+.ficheMedecin {
+	display: flex;
+	padding: 10px;
+	border: 1px solid black;
+	
+
+	.infos {
+		width: calc(100% /3)
+	}
+
+	.creneaux {
+		width: calc(100% * 2/3);
+		display: flex;
+		justify-content: space-between;
+
+		.horaire {
+			background-color: green;
+			border-radius: 5px;
+
+			&:hover {
+				a {
+					text-decoration: underline;
+				}	
+			}
+			
+			a {
+				color: white;
+				text-decoration: none;
+			}
+		}
+
+		.horaire.booked {
+			background-color: red;
+
+		}
+	}
+
+
+}
