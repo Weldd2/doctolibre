@@ -140,6 +140,8 @@ function sansApostrophe($tab) {
 
 //Fonction qui, utilisée dans un <select> va rajouter en option, toutes les catégories de médecin
 function selectToutesCategories(){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "SELECT id_categorie, nom_categorie FROM categorie";
     LireDonneesPDO($conn, $req, $tab);
@@ -153,6 +155,8 @@ function selectToutesCategories(){
  
  //Fonction qui renvoie un array composé de tous les médecins étant dans la catégorie passée en paramètre
  function getMedecinsParCategorie($categorie){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "SELECT id_user, nom_medecin, prenom_medecin, adresse_medecin, tel_medecin FROM medecin JOIN categorie_medecin using(id_user) WHERE id_categorie = ".$categorie;
     LireDonneesPDO($conn, $req, $tab);
@@ -162,6 +166,8 @@ function selectToutesCategories(){
  
  //Fonction qui insère un rdv dans la base de données avec les attributs passées en paramètre
  function insertRdv($id_patient, $id_medecin, $datetime){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "INSERT INTO rdv VALUES(null," . $id_patient . "," . $id_medecin . ",'En attente','" . $datetime . "')";
     echo $req;
@@ -171,6 +177,8 @@ function selectToutesCategories(){
  
  //Fonction qui renvoie un array composé de tous les médecins étant en attente de confirmation
  function getMedecinsEnAttente(){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "SELECT id_user, nom_medecin, prenom_medecin, adresse_medecin, tel_medecin FROM medecin WHERE etat_inscription_medecin = 'En attente'";
     LireDonneesPDO($conn, $req, $tab);
@@ -197,6 +205,8 @@ function selectToutesCategories(){
  
  //Fonction qui valide le médecin passé en paramètre
  function validerMedecin($id_medecin){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "UPDATE medecin SET etat_inscription_medecin = 'Accepté' WHERE id_user = '".$id_medecin."'";
     LireDonneesPDO($conn, $req, $tab);
@@ -207,6 +217,8 @@ function selectToutesCategories(){
  
  //Fonction qui refuse le médecin passé en paramètre
  function refuserMedecin($id_medecin){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "UPDATE medecin SET etat_inscription_medecin = 'Refusé' WHERE id_user = '".$id_medecin."'";
     LireDonneesPDO($conn, $req, $tab);
@@ -235,6 +247,8 @@ function selectToutesCategories(){
  
  //Fonction qui renvoie un array composé de tous les rendez-vous étant en attente de confirmation du médecin passé en paramètre
  function getRdvEnAttente($id_medecin){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "SELECT id_rdv, id_patient, id_medecin, etat_rdv, date_rdv FROM rdv WHERE id_medecin = ".$id_medecin;
     LireDonneesPDO($conn, $req, $tab);
@@ -244,6 +258,8 @@ function selectToutesCategories(){
  
  //Fonction qui valide le rendez-vous passé en paramètre
  function validerRdv($id_rdv){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "UPDATE rdv SET etat_rdv = 'Accepté' WHERE id_rdv = '".$id_rdv."'";
     LireDonneesPDO($conn, $req, $tab);
@@ -254,6 +270,8 @@ function selectToutesCategories(){
  
  //Fonction qui refuse le rendez-vous passé en paramètre
  function refuserRdv($id_rdv){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "UPDATE rdv SET etat_rdv = 'Refusé' WHERE id_rdv = '".$id_rdv."'";
     LireDonneesPDO($conn, $req, $tab);
@@ -264,8 +282,37 @@ function selectToutesCategories(){
  
  //Fonction qui renvoie un array composé de tous les dates des rendez-vous du mois et du médecin passée en paramètre
  function getRdvs($mois, $annee, $medecin){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "SELECT date_rdv FROM rdv WHERE id_medecin = '".$medecin."'";
+    LireDonneesPDO($conn, $req, $tab);
+    return $tab;
+ }
+
+ function getRdv($id_rdv){
+    include_once('pdo-oracle.php');
+
+    $conn = OuvrirConnexionPDO();
+    $req = "SELECT * FROM rdv WHERE id_rdv = '".$id_rdv."'";
+    LireDonneesPDO($conn, $req, $tab);
+    return $tab;
+ }
+
+ function getPatient($id_patient){
+    include_once('pdo-oracle.php');
+
+    $conn = OuvrirConnexionPDO();
+    $req = "SELECT * FROM patient WHERE id_user = '".$id_patient."'";
+    LireDonneesPDO($conn, $req, $tab);
+    return $tab;
+ }
+
+ function getMedecin($id_medecin){
+    include_once('pdo-oracle.php');
+
+    $conn = OuvrirConnexionPDO();
+    $req = "SELECT * FROM medecin WHERE id_user = '".$id_medecin."'";
     LireDonneesPDO($conn, $req, $tab);
     return $tab;
  }
@@ -359,6 +406,16 @@ function getCreneauxSurNbJours($id_medecin,$nb){
     return $array;
 }
 
+function getAllCreneauxParCategorie($id_categorie){
+    $array = array();
+    $medecins = getMedecinsParCategorie($id_categorie);
+    foreach($medecins as $medecin){
+        $creneaux = getCreneauxSurNbJours($medecin['id_user'], 5);
+        array_push($array, array($medecin['id_user'] => $creneaux));
+    }
+    return $array;
+}
+
 function insertAvis($tab) {
     include_once('pdo-oracle.php');
 
@@ -374,4 +431,11 @@ function deleteAvis($id_avis) {
     $req = "DELETE FROM `avis` WHERE 'id_avis' =". $id_avis;
     majDonneesPDO($conn, $req);
 }
+
+function printDiv($id_medecin, $medecins, $listeCreneaux){
+    $medecin = $medecins[$id_medecin];
+    $creneaux = $listeCreneaux[$id_medecin];
+    include('doctodiv.php');
+}
+
 ?>

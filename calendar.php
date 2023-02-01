@@ -6,8 +6,9 @@ include_once('functions.php');
 $month = $_GET['mois'];
 $year = $_GET['annee'];
 
+getAllCreneauxParCategorie(1);
+
 $id_medecin = "jules.mignotte@orange.fr";
-getCreneauxSurNbJours($id_medecin, 5);
 $data = getRdvs($month, $year, $id_medecin);
 
 ?>
