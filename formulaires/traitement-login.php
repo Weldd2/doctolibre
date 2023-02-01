@@ -4,7 +4,7 @@ session_start();
 include_once('../functions.php');
 $locationLogin = 'Location: ../login.php';
 
-$locationProjet = 'Location: ../index.php';
+$locationProjet = 'Location: ../home.php';
 
 
 if (!empty($_POST)) {

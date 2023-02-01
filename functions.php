@@ -140,8 +140,11 @@ function sansApostrophe($tab) {
 
 //Fonction qui, utilisée dans un <select> va rajouter en option, toutes les catégories de médecin
 function selectToutesCategories(){
+    include_once('pdo-oracle.php');
+
     $conn = OuvrirConnexionPDO();
     $req = "SELECT id_categorie, nom_categorie FROM categorie";
+	echo $req;
     LireDonneesPDO($conn, $req, $tab);
     $res = '';
     foreach($tab as $value){
@@ -373,5 +376,27 @@ function deleteAvis($id_avis) {
     $conn = OuvrirConnexionPDO();
     $req = "DELETE FROM `avis` WHERE 'id_avis' =". $id_avis;
     majDonneesPDO($conn, $req);
+}
+
+function getMotDePasse($id_user) {
+    include_once('pdo-oracle.php');
+	
+	$conn = OuvrirConnexionPDO();
+    $req = "SELECT password_user FROM user WHERE id_user = '".$id_user."'";
+    LireDonneesPDO($conn, $req, $tab);
+    return (string)$tab[0]['password_user'];
+}
+
+
+function printAllMedecinsParCategorie($id_categorie){
+    $creneaux = getAllCreneauxParCategorie($id_categorie);
+    $medecins = getMedecinsParCategorie($id_categorie);
+    
+    $nbMedecins = count($medecins);
+    
+    for($i=0;$i<$nbMedecins;$i++){
+        printDiv($i,$medecins,$creneaux);
+        echo "</br>";
+    }
 }
 ?>

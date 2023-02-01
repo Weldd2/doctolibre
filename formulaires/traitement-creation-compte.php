@@ -51,7 +51,7 @@ if (!empty($_POST)) {
 
     }
 }
-unset($_SESSION)
+unset($_SESSION);
 $_SESSION['error'] = true;
 header($locationCreationCompte);
 exit();
