@@ -1,7 +1,7 @@
 <?php include_once('head.php')?>
 
 
-<body >
+<body class="signin">
         <main class="form-recup-compte w-100 m-auto">
 			<div class="card">
 				

@@ -66,4 +66,11 @@ body {
   background-color: red;
 }
 
+.medecin {
+  display: flex;
+}
+.medecin .rdv-accepte, .medecin .rdv-attente {
+  width: 50%;
+}
+
 /*# sourceMappingURL=style.css.map */

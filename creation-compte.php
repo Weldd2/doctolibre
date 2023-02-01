@@ -9,15 +9,10 @@ $_SESSION['creaCompte'] = false;
 <html lang="fr">
     <?php include_once('head.php');?>
 
-    <body >
-        
+    <body class="signin">
         <main class="form-signup w-100 m-auto">
-
-            <?php include_once('formulaires/formulaire-creation-compte.php'); ?>
-            
+            <?php include_once('formulaires/formulaire-creation-compte.php'); ?>            
         </main>
     </body>
-
-
 
 </html>

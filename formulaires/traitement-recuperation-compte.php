@@ -16,7 +16,7 @@ if(!empty($_POST['verifCode'])) {
 	if(isUserUnique($_POST['email'])) {
 		echo "l'utilisateur n'existe pas";
 	} else {
-		$code = strval(random_int(1000, 9999));
+		$code = strval(random_int(100000, 999999));
 		$_SESSION['code'] = $code;
 		$result = mail($_POST['email'],'Tentative de récupération de compte Doctolibre',
 		'Si vous n\'êtes pas à l\'origine de cette manipulation, quelqu\'un essaye peut-être de vous subtiliser votre compte

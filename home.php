@@ -15,7 +15,7 @@
 
 	<?php if($_SESSION['role'] == 'Patient') :?>
 
-		<div class="container text-center">
+		<div class="container text-center patient">
 
 			<h2>Rechercher un médecin par catégorie</h2>
 
@@ -40,16 +40,19 @@
 
 	<?php endif; ?>
 
-	<?php if($_SESSION['role'] == 'Medecin') :?>
+	<?php if($_SESSION['role'] == 'Médecin') :?>
 
 
-		<div class="container text-center">
+		<div class="container text-center medecin">
 
 			<div class="rdv-accepte">
-				<ul></ul>
+				<h3>Rendez-vous acceptés</h3>
+				<?php printAllRdvAcceptes($_SESSION['userId']); ?>
 			</div>
 			<div class="rdv-attente">
+				<h3>Rendez-vous en attente</h3>
 
+				<?php printAllRdvEnAttente($_SESSION['userId']); ?>
 			</div>
 
 		</div>

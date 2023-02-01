@@ -8,8 +8,6 @@ body {
 }
 
 
-
-
 .ficheMedecin {
 	display: flex;
 	padding: 10px;
@@ -48,4 +46,15 @@ body {
 	}
 
 
+}
+
+
+
+.medecin {
+
+	display: flex;
+
+	.rdv-accepte, .rdv-attente {
+		width: 50%;
+	}
 }
