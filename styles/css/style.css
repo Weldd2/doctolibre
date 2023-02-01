@@ -70,7 +70,17 @@ body {
   display: flex;
 }
 .medecin .rdv-accepte, .medecin .rdv-attente {
-  width: 50%;
+  width: calc(50% - 10px);
+  padding: 0 5px;
+}
+.medecin .rdv-accepte ul, .medecin .rdv-attente ul {
+  padding: 10px;
+}
+.medecin .rdv-accepte ul form, .medecin .rdv-attente ul form {
+  margin-top: 16px;
+}
+.medecin .rdv-accepte .btn, .medecin .rdv-attente .btn {
+  margin: 0 5px;
 }
 
 /*# sourceMappingURL=style.css.map */

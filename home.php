@@ -42,7 +42,6 @@
 
 	<?php if($_SESSION['role'] == 'Médecin') :?>
 
-
 		<div class="container text-center medecin">
 
 			<div class="rdv-accepte">

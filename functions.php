@@ -253,33 +253,35 @@ function selectToutesCategories(){
  function printAllRdvAcceptes($id_medecin){
 	$rdvs = getRdvAcceptes($id_medecin);
 
+	echo "<ul class=\"list-group\">";
 	foreach($rdvs as $rdv){
 
-		echo "<div class='rdvEnAttente'>";
+		echo "<li class=\"list-group-item rdvEnAttente\">";
 		echo $rdv['id_patient'] ." : ". $rdv['date_rdv']." - Accepté";
-		echo "</div>";
+		echo "</li>";
 	}
  }
 
  function printAllRdvEnAttente($id_medecin){
 	$rdvs = getRdvEnAttente($id_medecin);
 
-	foreach($rdvs as $rdv){
+	echo "<ul class=\"list-group\">";
 
-		echo "<div class='rdvEnAttente'>";
+	foreach($rdvs as $rdv){
+		
+		echo "<li class=\"list-group-item rdvEnAttente\">";
 		echo $rdv['id_patient'] ." : ". $rdv['date_rdv'];
 		echo "</br>";
 		echo "<form action=\"formulaires/traitement-accepter-rdv.php\" method=\"POST\">";
 		echo "<input type=\"hidden\" name=\"id_rdv\" value=\"".$rdv['id_rdv']."\"></input>";
-		echo "<input type=\"submit\" name=\"btnAccepter\" value=\"Valider\"></input>";
-		echo "<input type=\"submit\" name=\"btnRefuser\" value=\"Refuser\"></input>";
+		echo "<input type=\"submit\" class=\"btn btn-success\" name=\"btnAccepter\" value=\"Valider\"></input>";
+		echo "<input type=\"submit\" class=\"btn btn-warning\" name=\"btnRefuser\" value=\"Refuser\"></input>";
 		echo "</form>";
-		echo "</div>";
+		echo "</li>";
 	}
 }
 
 
- 
  
  //Fonction qui valide le rendez-vous passé en paramètre
  function validerRdv($id_rdv){

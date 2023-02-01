@@ -55,6 +55,20 @@ body {
 	display: flex;
 
 	.rdv-accepte, .rdv-attente {
-		width: 50%;
+
+		width: calc(50% - 10px);
+		padding: 0 5px;
+
+		ul {
+			padding: 10px;
+
+			form {
+				margin-top: 16px
+			}
+		}
+
+		.btn {
+			margin: 0 5px;
+		}
 	}
 }
