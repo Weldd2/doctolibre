@@ -454,4 +454,10 @@ function printAllMedecinsParCategorie($id_categorie){
         echo "</br>";
     }
 }
+
+function printDiv($id_medecin, $medecins, $listeCreneaux){
+    $medecin = $medecins[$id_medecin];
+    $creneaux = $listeCreneaux[$id_medecin];
+    include('doctodiv.php');
+}
 ?>
