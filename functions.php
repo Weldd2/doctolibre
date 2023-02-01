@@ -438,4 +438,24 @@ function printDiv($id_medecin, $medecins, $listeCreneaux){
     include('doctodiv.php');
 }
 
+function printAllMedecinsParCategorie($id_categorie){
+    $creneaux = getAllCreneauxParCategorie($id_categorie);
+    $medecins = getMedecinsParCategorie($id_categorie);
+    
+    $nbMedecins = count($medecins);
+    
+    for($i=0;$i<$nbMedecins;$i++){
+        printDiv($i,$medecins,$creneaux);
+        echo "</br>";
+    }
+}
+
+function sendMailRappel($id_rdv){
+    $patient = getPatient($rdv[0]['id_patient']);
+    
+    $medecin = getMedecin($rdv[0]['id_medecin']);
+    
+    mail($patient[0]['id_user'],'Votre Rendez-Vous médical approche!',$patient[0]['prenom_patient'] . " , votre rendez vous médical avec " . $medecin[0]['nom_medecin'] .
+     " " . $medecin[0]['prenom_medecin'] . " est pour demain " . date('H:i',strtotime($rdv[0]['date_rdv'])) . " , n'oubliez pas d'être présent.");
+}
 ?>
