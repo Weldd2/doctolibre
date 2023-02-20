@@ -38,4 +38,49 @@ body {
   font-family: "Roboto" !important;
 }
 
+.ficheMedecin {
+  display: flex;
+  padding: 10px;
+  border: 1px solid black;
+}
+.ficheMedecin .infos {
+  width: 33.3333333333%;
+}
+.ficheMedecin .creneaux {
+  width: 66.6666666667%;
+  display: flex;
+  justify-content: space-between;
+}
+.ficheMedecin .creneaux .horaire {
+  background-color: green;
+  border-radius: 5px;
+}
+.ficheMedecin .creneaux .horaire:hover a {
+  text-decoration: underline;
+}
+.ficheMedecin .creneaux .horaire a {
+  color: white;
+  text-decoration: none;
+}
+.ficheMedecin .creneaux .horaire.booked {
+  background-color: red;
+}
+
+.medecin {
+  display: flex;
+}
+.medecin .rdv-accepte, .medecin .rdv-attente {
+  width: calc(50% - 10px);
+  padding: 0 5px;
+}
+.medecin .rdv-accepte ul, .medecin .rdv-attente ul {
+  padding: 10px;
+}
+.medecin .rdv-accepte ul form, .medecin .rdv-attente ul form {
+  margin-top: 16px;
+}
+.medecin .rdv-accepte .btn, .medecin .rdv-attente .btn {
+  margin: 0 5px;
+}
+
 /*# sourceMappingURL=style.css.map */

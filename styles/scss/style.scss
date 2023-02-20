@@ -6,3 +6,69 @@ body {
   height: 100%;
   font-family: "Roboto"!important;
 }
+
+
+.ficheMedecin {
+	display: flex;
+	padding: 10px;
+	border: 1px solid black;
+	
+
+	.infos {
+		width: calc(100% /3)
+	}
+
+	.creneaux {
+		width: calc(100% * 2/3);
+		display: flex;
+		justify-content: space-between;
+
+		.horaire {
+			background-color: green;
+			border-radius: 5px;
+
+			&:hover {
+				a {
+					text-decoration: underline;
+				}	
+			}
+			
+			a {
+				color: white;
+				text-decoration: none;
+			}
+		}
+
+		.horaire.booked {
+			background-color: red;
+
+		}
+	}
+
+
+}
+
+
+
+.medecin {
+
+	display: flex;
+
+	.rdv-accepte, .rdv-attente {
+
+		width: calc(50% - 10px);
+		padding: 0 5px;
+
+		ul {
+			padding: 10px;
+
+			form {
+				margin-top: 16px
+			}
+		}
+
+		.btn {
+			margin: 0 5px;
+		}
+	}
+}

@@ -228,34 +228,60 @@ function selectToutesCategories(){
  }
  
  
- //Fonction qui affiche un petit formulaire qui permet d'accepter ou de refuser les rendez-vous du médecin passé en paramètre
- function afficherRdvEnAttente($id_medecin){
-    $tab = getRdvEnAttente($id_medecin);
-    if (!empty($tab)) {
-        foreach ($tab as $key => $value) {
-            echo $value['id_rdv'] . " " . $value['date_rdv'];
-            echo "
-            <form action='validerRdvTraitement.php' method='post'>
-                <input name='submitA' type='submit' value='Accepter'>
-                <input name='submitR' type='submit' value='Refuser'>
-                <input name='rdv_id' type='hidden' value='".$value['id_rdv']."'>
-                </form>
-                </br>";
-            }
-    }
- }
- 
  
  //Fonction qui renvoie un array composé de tous les rendez-vous étant en attente de confirmation du médecin passé en paramètre
  function getRdvEnAttente($id_medecin){
     include_once('pdo-oracle.php');
 
     $conn = OuvrirConnexionPDO();
-    $req = "SELECT id_rdv, id_patient, id_medecin, etat_rdv, date_rdv FROM rdv WHERE id_medecin = ".$id_medecin;
+    $req = "SELECT * FROM rdv WHERE id_medecin = '".$id_medecin."' AND etat_rdv = 'En Attente'";
     LireDonneesPDO($conn, $req, $tab);
     return $tab;
  }
- 
+
+  //Fonction qui renvoie un array composé de tous les rendez-vous étant en attente de confirmation du médecin passé en paramètre
+  function getRdvAcceptes($id_medecin){
+    include_once('pdo-oracle.php');
+
+
+    $conn = OuvrirConnexionPDO();
+    $req = "SELECT * FROM rdv WHERE id_medecin = '".$id_medecin."' AND etat_rdv = 'Accepté'";
+	LireDonneesPDO($conn, $req, $tab);
+    return $tab;
+ }
+
+ function printAllRdvAcceptes($id_medecin){
+	$rdvs = getRdvAcceptes($id_medecin);
+
+	echo "<ul class=\"list-group\">";
+	foreach($rdvs as $rdv){
+
+		echo "<li class=\"list-group-item rdvEnAttente\">";
+		echo $rdv['id_patient'] ." : ". $rdv['date_rdv']." - Accepté";
+		echo "</li>";
+	}
+ }
+
+ function printAllRdvEnAttente($id_medecin){
+	$rdvs = getRdvEnAttente($id_medecin);
+
+	echo "<ul class=\"list-group\">";
+
+	foreach($rdvs as $rdv){
+		
+		echo "<li class=\"list-group-item rdvEnAttente\">";
+		echo $rdv['id_patient'] ." : ". $rdv['date_rdv'];
+		echo "</br>";
+		echo "<form action=\"formulaires/traitement-accepter-rdv.php\" method=\"POST\">";
+		echo "<input type=\"hidden\" name=\"id_rdv\" value=\"".$rdv['id_rdv']."\"></input>";
+		echo "<input type=\"submit\" class=\"btn btn-success\" name=\"btnAccepter\" value=\"Valider\"></input>";
+		echo "<input type=\"submit\" class=\"btn btn-warning\" name=\"btnRefuser\" value=\"Refuser\"></input>";
+		echo "</form>";
+		echo "</li>";
+	}
+}
+
+
  
  //Fonction qui valide le rendez-vous passé en paramètre
  function validerRdv($id_rdv){
@@ -451,7 +477,6 @@ function printAllMedecinsParCategorie($id_categorie){
     
     for($i=0;$i<$nbMedecins;$i++){
         printDiv($i,$medecins,$creneaux);
-        echo "</br>";
     }
 }
 
@@ -460,4 +485,6 @@ function printDiv($id_medecin, $medecins, $listeCreneaux){
     $creneaux = $listeCreneaux[$id_medecin];
     include('doctodiv.php');
 }
+
+
 ?>
